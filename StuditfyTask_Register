@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | StudifyTask</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-[#9B3C7D] min-h-screen flex items-center justify-center px-4">
+
+  <!-- Register Card -->
+  <div class="bg-white w-full max-w-md p-6 rounded-xl shadow">
+
+    <!-- Back -->
+    <a
+      href="StudifyTask_Login.html"
+      class="inline-flex items-center text-sm text-[#9B3C7D] hover:underline mb-4"
+    >
+      ← Kembali ke Login
+    </a>
+
+    <h1 class="text-2xl font-bold text-center mb-1">Buat Akun</h1>
+    <p class="text-center text-gray-500 mb-6 text-sm">
+      Daftar untuk mulai menggunakan StudifyTask
+    </p>
+
+    <!-- Warning -->
+    <div
+      id="warning"
+      class="hidden mb-4 text-sm text-red-600 bg-red-100 px-4 py-2 rounded"
+    ></div>
+
+    <!-- Form -->
+    <form onsubmit="return registerUser()">
+      <input
+        id="username"
+        type="text"
+        placeholder="Contoh: Nate Higger"
+        class="w-full border rounded-lg px-3 py-2 mb-3"
+      />
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password (min. 6 karakter)"
+        class="w-full border rounded-lg px-3 py-2 mb-3"
+      />
+
+      <input
+        id="confirmPassword"
+        type="password"
+        placeholder="Konfirmasi Password"
+        class="w-full border rounded-lg px-3 py-2 mb-4"
+      />
+
+      <button
+        type="submit"
+        class="w-full bg-[#9B3C7D] text-white font-semibold py-3 rounded-lg hover:opacity-90 transition"
+      >
+        Daftar
+      </button>
+    </form>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    function registerUser() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const warning = document.getElementById("warning");
+
+      warning.classList.add("hidden");
+      warning.textContent = "";
+
+      if (!username || !password || !confirmPassword) {
+        warning.textContent = "Semua field wajib diisi.";
+        warning.classList.remove("hidden");
+        return false;
+      }
+
+      if (password.length < 6) {
+        warning.textContent = "Password minimal 6 karakter.";
+        warning.classList.remove("hidden");
+        return false;
+      }
+
+      if (password !== confirmPassword) {
+        warning.textContent = "Password dan konfirmasi tidak sama.";
+        warning.classList.remove("hidden");
+        return false;
+      }
+
+      // SIMPAN USER DUMMY
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const isExist = users.some(u => u.username === username);
+      if (isExist) {
+        warning.textContent = "Username sudah digunakan.";
+        warning.classList.remove("hidden");
+        return false;
+      }
+
+      users.push({ username, password });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Registrasi berhasil! Silakan login.");
+      window.location.href = "StudifyTask_Login.html";
+      return false;
+    }
+  </script>
+
+</body>
+</html>
